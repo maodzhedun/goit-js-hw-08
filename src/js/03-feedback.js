@@ -12,12 +12,11 @@ loadPage();
 
 function inputData(event) {
     objectUserDAta[event.target.name] = event.target.value.trim();
-    console.log(objectUserDAta);
     localStorage.setItem(DATA_LS_KEY, JSON.stringify(objectUserDAta));
  }
 
-function loadPage() { 
-    const data = localStorage.getItem(DATA_LS_KEY);
+ function loadPage() { 
+    try { const data = localStorage.getItem(DATA_LS_KEY);
     if (!data) {
         return;
     } 
@@ -25,6 +24,9 @@ function loadPage() {
     Object.entries(objectUserDAta).forEach(([key, val]) => {
         form.elements[key].value = val
     })
+    } catch (error) {
+        console.error(error.message);
+    }
 }
 
 function formSubmit(event) {
@@ -32,4 +34,5 @@ function formSubmit(event) {
     console.log(objectUserDAta);
     event.currentTarget.reset();
     localStorage.removeItem(DATA_LS_KEY);
+    objectUserDAta = {};
 }
